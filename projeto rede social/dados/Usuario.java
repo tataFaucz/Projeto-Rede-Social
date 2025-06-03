@@ -1,76 +1,54 @@
 package dados;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Usuario {
     private String nome;
-    private String email;
-    private String senha;
-    private Set<Usuario> seguindo; 
-    private Set<Usuario> seguidores; 
+    private String fotoPerfil;
+    private List<Usuario> amigos;
+    private List<Foto> fotos;
+    private List<Recado> recados;
 
-    public Usuario(String nome, String email, String senha) {
+    public Usuario(String nome) {
         this.nome = nome;
-        this.email = email;
-        this.senha = senha;
-        this.seguindo = new HashSet<>();
-        this.seguidores = new HashSet<>();
+        this.fotoPerfil = "default.png";
+        this.amigos = new ArrayList<>();
+        this.fotos = new ArrayList<>();
+        this.recados = new ArrayList<>();
     }
 
-    public String getNome() {
-        return nome;
+    public String getNome(){ 
+        return nome; 
     }
-
-    public void setNome(String nome) {
-        this.nome = nome;
+    public String getFotoPerfil(){ 
+        return fotoPerfil; 
     }
-
-    public String getEmail() {
-        return email;
+    public void setFotoPerfil(String fotoPerfil){ 
+        this.fotoPerfil = fotoPerfil; 
     }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public List<Usuario> getAmigos(){ 
+        return amigos;
     }
-
-    public String getSenha() {
-        return senha;
+    public List<Foto> getFotos(){ 
+        return fotos; 
     }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public List<Recado> getRecados(){ 
+        return recados; 
     }
-
-    public Set<Usuario> getSeguindo() {
-        return seguindo;
+    public void adicionarAmigo(Usuario amigo) {
+        if (!amigos.contains(amigo) && !amigo.equals(this)) amigos.add(amigo);
     }
-
-    public Set<Usuario> getSeguidores() {
-        return seguidores;
+    public void removerAmigo(Usuario amigo) {
+        amigos.remove(amigo);
     }
-
-    public void seguir(Usuario usuario) {
-        if (usuario != null && !this.equals(usuario)) {
-            this.seguindo.add(usuario);
-            usuario.seguidores.add(this);
-        }
+    public boolean ehAmigo(Usuario amigo) {
+        return amigos.contains(amigo);
     }
-
-    public void deixarDeSeguir(Usuario usuario) {
-        if (usuario != null && this.seguindo.contains(usuario)) {
-            this.seguindo.remove(usuario);
-            usuario.seguidores.remove(this);
-        }
+    public void adicionarFoto(Foto foto){ 
+        fotos.add(foto); 
     }
-
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                "nome='" + nome + '\'' +
-                ", email='" + email + '\'' +
-                ", seguindo=" + seguindo.size() +
-                ", seguidores=" + seguidores.size() +
-                '}';
+    public void adicionarRecado(Recado recado){ 
+        recados.add(recado); 
     }
 }
