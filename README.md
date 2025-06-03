@@ -1,7 +1,3 @@
-Claro! Aqui está a versão atualizada do `README.md`, sem a parte da licença e com uma seção extra sobre **Possibilidades de Expansão**:
-
----
-
 # Projeto Rede Social
 
 Este é um projeto inicial de uma rede social simples, desenvolvido em Java. O objetivo é permitir o cadastro de usuários, postagem de fotos e gerenciamento de seguidores.
