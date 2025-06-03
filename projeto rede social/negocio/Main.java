@@ -1,32 +1,33 @@
-package negocio;
+package negocios;
 
-import dados.Foto;
-import dados.Usuario;
-
-import java.time.LocalDateTime;
+import dados.*;
+import ui.MainFrame;
 
 public class Main {
     public static void main(String[] args) {
         Sistema sistema = new Sistema();
+        Usuario alice = new Usuario("Alice");
+        Usuario bob = new Usuario("Bob");
+        Usuario carol = new Usuario("Carol");
+        Usuario baldo = new Usuario("Baldo");
 
-        Usuario usuario1 = new Usuario("Alice", "alice@email.com", "senha123");
-        Usuario usuario2 = new Usuario("Liz", "liz@email.com", "senha456");
-        sistema.adicionarUsuario(usuario1);
-        sistema.adicionarUsuario(usuario2);
+        sistema.adicionarUsuario(alice);
+        sistema.adicionarUsuario(baldo);
+        sistema.adicionarUsuario(bob);
+        sistema.adicionarUsuario(carol);
 
-        Foto foto1 = new Foto("Foto na praia", "/imagens/praia.jpg", LocalDateTime.now());
-        Foto foto2 = new Foto("Foto no parque", "/imagens/parque.jpg", LocalDateTime.now());
-        sistema.adicionarFoto(foto1);
-        sistema.adicionarFoto(foto2);
+        sistema.adicionarAmg(alice, baldo);
+        sistema.adicionarAmg(bob, baldo);
+        sistema.adicionarAmg(alice, bob);
 
-        System.out.println("Usuários cadastrados:");
-        for (Usuario u : sistema.listarUsuarios()) {
-            System.out.println(u);
-        }
+        Foto fotoBob = new Foto("imagem.bob.png", "Minha primeira foto!");
+        bob.adicionarFoto(fotoBob);
 
-        System.out.println("\nFotos postadas:");
-        for (Foto f : sistema.listarFotos()) {
-            System.out.println(f);
-        }
+        Foto fotoBaldo = new Foto("imagem.baldo.png", "Lecionando!");
+        baldo.adicionarFoto(fotoBaldo);
+
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            new MainFrame(sistema).setVisible(true);
+        });
     }
 }
