@@ -5,50 +5,90 @@ import java.util.List;
 
 public class Usuario {
     private String nome;
+    private String email;
+    private String senha;
     private String fotoPerfil;
-    private List<Usuario> amigos;
-    private List<Foto> fotos;
-    private List<Recado> recados;
+    private List<Usuario> seguindo;
+    private List<Usuario> seguidores;
+    private List<Foto> publicacoes;
+    private List<Mensagem> mensagensEnviadas;
+    private List<Mensagem> mensagensRecebidas;
 
-    public Usuario(String nome) {
+    public Usuario(String nome, String email, String senha, String fotoPerfil) {
         this.nome = nome;
-        this.fotoPerfil = "default.png";
-        this.amigos = new ArrayList<>();
-        this.fotos = new ArrayList<>();
-        this.recados = new ArrayList<>();
+        this.email = email;
+        this.senha = senha;
+        this.fotoPerfil = fotoPerfil;
+        this.seguindo = new ArrayList<>();
+        this.seguidores = new ArrayList<>();
+        this.publicacoes = new ArrayList<>();
+        this.mensagensEnviadas = new ArrayList<>();
+        this.mensagensRecebidas = new ArrayList<>();
     }
 
     public String getNome(){ 
         return nome; 
     }
-    public String getFotoPerfil(){ 
+    public String getEmail(){ 
+        return email; 
+    }
+    public String getSenha() { 
+        return senha; 
+    }
+    public String getFotoPerfil() { 
         return fotoPerfil; 
     }
-    public void setFotoPerfil(String fotoPerfil){ 
-        this.fotoPerfil = fotoPerfil; 
+    public List<Usuario> getSeguindo() { 
+        return seguindo; 
     }
-    public List<Usuario> getAmigos(){ 
-        return amigos;
+    public List<Usuario> getSeguidores() { 
+        return seguidores; 
     }
-    public List<Foto> getFotos(){ 
-        return fotos; 
+    public List<Foto> getPublicacoes() { 
+        return publicacoes; 
     }
-    public List<Recado> getRecados(){ 
-        return recados; 
+
+    public boolean seguir(Usuario outro) {
+        if (!seguindo.contains(outro) && !outro.equals(this)) {
+            seguindo.add(outro);
+            outro.seguidores.add(this);
+            return true;
+        }
+        return false;
     }
-    public void adicionarAmigo(Usuario amigo) {
-        if (!amigos.contains(amigo) && !amigo.equals(this)) amigos.add(amigo);
+
+    public boolean deixarDeSeguir(Usuario outro) {
+        if (seguindo.remove(outro)) {
+            outro.seguidores.remove(this);
+            return true;
+        }
+        return false;
     }
-    public void removerAmigo(Usuario amigo) {
-        amigos.remove(amigo);
+
+    public void adicionarPublicacao(Foto foto) {
+        publicacoes.add(foto);
     }
-    public boolean ehAmigo(Usuario amigo) {
-        return amigos.contains(amigo);
+
+    public void enviarMensagem(Usuario destinatario, String conteudo) {
+        Mensagem mensagem = new Mensagem(this, destinatario, conteudo);
+        mensagensEnviadas.add(mensagem);
+        destinatario.receberMensagem(mensagem);
     }
-    public void adicionarFoto(Foto foto){ 
-        fotos.add(foto); 
+
+    private void receberMensagem(Mensagem mensagem) {
+        mensagensRecebidas.add(mensagem);
     }
-    public void adicionarRecado(Recado recado){ 
-        recados.add(recado); 
+
+    public List<Mensagem> getMensagensEnviadas() {
+        return mensagensEnviadas;
+    }
+
+    public List<Mensagem> getMensagensRecebidas() {
+        return mensagensRecebidas;
+    }
+
+    @Override
+    public String toString() {
+        return nome + " (" + email + ")";
     }
 }
