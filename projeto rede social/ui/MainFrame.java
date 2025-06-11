@@ -1,29 +1,34 @@
 package ui;
 
-import javax.swing.*;
-import java.awt.*;
 import negocios.Sistema;
+
+import javax.swing.*;
 
 public class MainFrame extends JFrame {
     private Sistema sistema;
 
     public MainFrame(Sistema sistema) {
-        this.sistema = sistema;
-        setTitle("Floguinho - De Volta aos 15");
+        sistema = new Sistema();
+        setTitle("Rede Social");
+        setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(900, 600);
         setLocationRelativeTo(null);
 
-        getContentPane().setBackground(new Color(255, 204, 255));
-        setLayout(new BorderLayout());
-
-        add(new LoginPanel(this, sistema), BorderLayout.CENTER);
+        mostrarLogin();
     }
 
-    public void showUserPanel(String nomeUsuario) {
-        getContentPane().removeAll();
-        add(new UserPanel(this, sistema, nomeUsuario), BorderLayout.CENTER);
+    public void mostrarLogin() {
+        setContentPane(new LoginPanel(sistema, this));
         revalidate();
-        repaint();
+    }
+
+    public void mostrarCadastro() {
+        setContentPane(new CadastroPanel(sistema, this));
+        revalidate();
+    }
+
+    public void mostrarFeed() {
+        setContentPane(new FeedPanel(sistema, this));
+        revalidate();
     }
 }
