@@ -7,17 +7,38 @@ import java.awt.*;
 public class InicioPanel extends JPanel {
     public InicioPanel(Sistema sistema, MainFrame mainFrame) {
         setLayout(new GridBagLayout());
+        setBackground(MainFrame.AMARELO_CLARO);
+
         GridBagConstraints gbc = new GridBagConstraints();
+
+        JLabel titulo = new JLabel("Bem-vindo ao Omellety!");
+        titulo.setFont(new Font("Arial", Font.BOLD, 22));
+        titulo.setForeground(MainFrame.AMARELO_ESCURO);
 
         JButton cadastrarButton = new JButton("Cadastrar");
         JButton entrarButton = new JButton("Entrar");
 
-        gbc.insets = new Insets(10, 10, 10, 10);
+        cadastrarButton.setBackground(MainFrame.AMARELO_BOTAO);
+        cadastrarButton.setForeground(Color.DARK_GRAY);
+        cadastrarButton.setFocusPainted(false);
+        cadastrarButton.setBorder(BorderFactory.createLineBorder(MainFrame.AMARELO_BORDA, 2));
+        cadastrarButton.setFont(new Font("Arial", Font.BOLD, 16));
+
+        entrarButton.setBackground(MainFrame.AMARELO_MEDIO);
+        entrarButton.setForeground(Color.DARK_GRAY);
+        entrarButton.setFocusPainted(false);
+        entrarButton.setBorder(BorderFactory.createLineBorder(MainFrame.AMARELO_BORDA, 2));
+        entrarButton.setFont(new Font("Arial", Font.BOLD, 16));
+
+        gbc.insets = new Insets(20, 10, 20, 10);
 
         gbc.gridx = 0; gbc.gridy = 0;
-        add(cadastrarButton, gbc);
+        add(titulo, gbc);
 
         gbc.gridx = 0; gbc.gridy = 1;
+        add(cadastrarButton, gbc);
+
+        gbc.gridx = 0; gbc.gridy = 2;
         add(entrarButton, gbc);
 
         cadastrarButton.addActionListener(e -> mainFrame.mostrarCadastro());
