@@ -61,7 +61,6 @@ public class CadastroPanel extends JPanel {
         gbc.gridx = 1;
         add(voltarButton, gbc);
 
-        // Ações dos botões
         cadastrarButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String nome = nomeField.getText();
@@ -70,7 +69,7 @@ public class CadastroPanel extends JPanel {
 
                 if (sistema.criarConta(nome, email, senha)) {
                     JOptionPane.showMessageDialog(null, "Conta criada com sucesso!");
-                    mainFrame.mostrarLogin();
+                    mainFrame.mostrarInicio(); // volta para tela inicial
                 } else {
                     JOptionPane.showMessageDialog(null, "Email já está em uso.");
                 }
@@ -79,7 +78,7 @@ public class CadastroPanel extends JPanel {
 
         voltarButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                mainFrame.mostrarLogin();
+                mainFrame.mostrarInicio(); // volta para tela inicial
             }
         });
     }
