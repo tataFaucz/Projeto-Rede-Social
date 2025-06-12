@@ -14,7 +14,7 @@ public class LoginPanel extends JPanel {
     private JTextField emailField;
     private JPasswordField senhaField;
     private JButton loginButton;
-    private JButton cadastrarButton;
+    private JButton voltarButton;
 
     public LoginPanel(Sistema sistema, MainFrame mainFrame) {
         this.sistema = sistema;
@@ -33,7 +33,7 @@ public class LoginPanel extends JPanel {
         senhaField = new JPasswordField(20);
 
         loginButton = new JButton("Entrar");
-        cadastrarButton = new JButton("Cadastrar");
+        voltarButton = new JButton("Voltar");
 
         gbc.insets = new Insets(5, 5, 5, 5);
 
@@ -53,7 +53,7 @@ public class LoginPanel extends JPanel {
         add(loginButton, gbc);
 
         gbc.gridx = 1; gbc.gridy = 2;
-        add(cadastrarButton, gbc);
+        add(voltarButton, gbc);
 
         // Ações dos botões
         loginButton.addActionListener(new ActionListener() {
@@ -61,7 +61,7 @@ public class LoginPanel extends JPanel {
                 String email = emailField.getText();
                 String senha = new String(senhaField.getPassword());
 
-                if (sistema.login(email, senha)) {
+                if (sistema.autenticar(email, senha)) {
                     JOptionPane.showMessageDialog(null, "Login bem-sucedido!");
                     mainFrame.mostrarFeed(); // troca para painel principal
                 } else {
@@ -70,9 +70,9 @@ public class LoginPanel extends JPanel {
             }
         });
 
-        cadastrarButton.addActionListener(new ActionListener() {
+        voltarButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                mainFrame.mostrarCadastro(); // troca para painel de cadastro
+                mainFrame.mostrarInicio(); // volta para tela inicial
             }
         });
     }
