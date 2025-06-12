@@ -18,6 +18,7 @@ public class FeedPanel extends JPanel {
         this.sistema = sistema;
         this.mainFrame = mainFrame;
         setLayout(new BorderLayout());
+        setBackground(MainFrame.AMARELO_CLARO);
 
         criarMenuLateral();
         criarAreaFeed();
@@ -27,6 +28,7 @@ public class FeedPanel extends JPanel {
     private void criarMenuLateral() {
         JPanel menu = new JPanel(new GridLayout(6, 1));
         menu.setPreferredSize(new Dimension(150, getHeight()));
+        menu.setBackground(MainFrame.AMARELO_MEDIO);
 
         JButton btnPublicar = new JButton("Nova Publicação");
         JButton btnExplorar = new JButton("Explorar");
@@ -34,10 +36,18 @@ public class FeedPanel extends JPanel {
         JButton btnPerfil = new JButton("Perfil");
         JButton btnLogout = new JButton("Logout");
 
+        for (JButton btn : new JButton[]{btnPublicar, btnExplorar, btnMensagens, btnPerfil, btnLogout}) {
+            btn.setBackground(MainFrame.AMARELO_BOTAO);
+            btn.setForeground(Color.DARK_GRAY);
+            btn.setFocusPainted(false);
+            btn.setBorder(BorderFactory.createLineBorder(MainFrame.AMARELO_BORDA, 2));
+            btn.setFont(new Font("Arial", Font.BOLD, 13));
+        }
+
         btnPublicar.addActionListener(e -> publicarFoto());
-        btnExplorar.addActionListener(e -> JOptionPane.showMessageDialog(null, "Funcionalidade em desenvolvimento."));
-        btnMensagens.addActionListener(e -> JOptionPane.showMessageDialog(null, "Funcionalidade em desenvolvimento."));
-        btnPerfil.addActionListener(e -> JOptionPane.showMessageDialog(null, "Funcionalidade em desenvolvimento."));
+        btnExplorar.addActionListener(e -> explorarUsuarios());
+        btnMensagens.addActionListener(e -> mensagensUsuarios());
+        btnPerfil.addActionListener(e -> mostrarPerfil());
         btnLogout.addActionListener(e -> {
             sistema.logout();
             mainFrame.mostrarLogin();
@@ -56,6 +66,7 @@ public class FeedPanel extends JPanel {
     private void criarAreaFeed() {
         feedArea = new JPanel();
         feedArea.setLayout(new BoxLayout(feedArea, BoxLayout.Y_AXIS));
+        feedArea.setBackground(MainFrame.AMARELO_CLARO);
         JScrollPane scrollPane = new JScrollPane(feedArea);
         add(scrollPane, BorderLayout.CENTER);
     }
@@ -80,13 +91,22 @@ public class FeedPanel extends JPanel {
 
     private JPanel criarCardPublicacao(Foto foto) {
         JPanel card = new JPanel(new BorderLayout());
-        card.setBorder(BorderFactory.createTitledBorder(foto.getAutor().getNome()));
+        card.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(MainFrame.AMARELO_BORDA, 2), foto.getAutor().getNome()));
+        card.setBackground(MainFrame.AMARELO_CLARO);
 
         JLabel legendaLabel = new JLabel("<html><b>" + foto.getLegenda() + "</b></html>");
         JLabel curtidasLabel = new JLabel("Curtidas: " + foto.getCurtidas().size());
 
         JButton btnCurtir = new JButton("Curtir");
         JButton btnCompartilhar = new JButton("Compartilhar");
+
+        for (JButton btn : new JButton[]{btnCurtir, btnCompartilhar}) {
+            btn.setBackground(MainFrame.AMARELO_BOTAO);
+            btn.setForeground(Color.DARK_GRAY);
+            btn.setFocusPainted(false);
+            btn.setBorder(BorderFactory.createLineBorder(MainFrame.AMARELO_BORDA, 1));
+            btn.setFont(new Font("Arial", Font.BOLD, 12));
+        }
 
         btnCurtir.addActionListener(e -> {
             if (sistema.curtirFoto(foto)) {
@@ -105,6 +125,7 @@ public class FeedPanel extends JPanel {
         });
 
         JPanel botoes = new JPanel();
+        botoes.setBackground(MainFrame.AMARELO_CLARO);
         botoes.add(btnCurtir);
         botoes.add(btnCompartilhar);
 
@@ -140,5 +161,151 @@ public class FeedPanel extends JPanel {
                 }
             }
         }
+    }
+
+    private void explorarUsuarios() {
+        Usuario atual = sistema.getUsuarioLogado();
+        List<Usuario> usuarios = sistema.getUsuarios();
+        DefaultListModel<String> model = new DefaultListModel<>();
+
+        for (Usuario u : usuarios) {
+            if (!u.equals(atual)) {
+                boolean seguindo = atual.getSeguindo().contains(u);
+                model.addElement(u.getNome() + " (" + u.getEmail() + ")" + (seguindo ? " [Seguindo]" : ""));
+            }
+        }
+
+        JList<String> lista = new JList<>(model);
+        lista.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        int result = JOptionPane.showConfirmDialog(
+            null,
+            new JScrollPane(lista),
+            "Explorar usuários da Omeletty",
+            JOptionPane.OK_CANCEL_OPTION
+        );
+
+        if (result == JOptionPane.OK_OPTION && lista.getSelectedIndex() != -1) {
+            Usuario selecionado = null;
+            int idx = 0;
+            for (Usuario u : usuarios) {
+                if (!u.equals(atual)) {
+                    if (idx == lista.getSelectedIndex()) {
+                        selecionado = u;
+                        break;
+                    }
+                    idx++;
+                }
+            }
+            if (selecionado != null) {
+                if (atual.getSeguindo().contains(selecionado)) {
+                    int desf = JOptionPane.showConfirmDialog(null, "Você já segue este usuário. Deseja deixar de seguir?", "Omeletty", JOptionPane.YES_NO_OPTION);
+                    if (desf == JOptionPane.YES_OPTION) {
+                        atual.deixarDeSeguir(selecionado);
+                        JOptionPane.showMessageDialog(null, "Você deixou de seguir " + selecionado.getNome() + "!");
+                    }
+                } else {
+                    atual.seguir(selecionado);
+                    JOptionPane.showMessageDialog(null, "Agora você segue " + selecionado.getNome() + "!");
+                }
+            }
+        }
+    }
+
+    private void mensagensUsuarios() {
+        Usuario atual = sistema.getUsuarioLogado();
+        List<Usuario> usuarios = sistema.getUsuarios();
+        DefaultListModel<String> model = new DefaultListModel<>();
+
+        for (Usuario u : usuarios) {
+            if (!u.equals(atual)) {
+                model.addElement(u.getNome() + " (" + u.getEmail() + ")");
+            }
+        }
+
+        JList<String> lista = new JList<>(model);
+        lista.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        int result = JOptionPane.showConfirmDialog(
+            null,
+            new JScrollPane(lista),
+            "Mensagens - Escolha um usuário",
+            JOptionPane.OK_CANCEL_OPTION
+        );
+
+        if (result == JOptionPane.OK_OPTION && lista.getSelectedIndex() != -1) {
+            Usuario selecionado = null;
+            int idx = 0;
+            for (Usuario u : usuarios) {
+                if (!u.equals(atual)) {
+                    if (idx == lista.getSelectedIndex()) {
+                        selecionado = u;
+                        break;
+                    }
+                    idx++;
+                }
+            }
+            if (selecionado != null) {
+                // Exibe histórico
+                List<dados.Mensagem> conversas = sistema.visualizarMensagens(selecionado.getEmail());
+                StringBuilder historico = new StringBuilder();
+                if (conversas != null && !conversas.isEmpty()) {
+                    for (dados.Mensagem m : conversas) {
+                        historico.append(m.getRemetente().getNome())
+                                 .append(": ")
+                                 .append(m.getConteudo())
+                                 .append("\n");
+                    }
+                } else {
+                    historico.append("Nenhuma mensagem ainda.\n");
+                }
+
+                JTextArea area = new JTextArea(historico.toString(), 10, 30);
+                area.setEditable(false);
+                JTextField novaMsg = new JTextField();
+
+                Object[] fields = {
+                    new JLabel("Histórico:"), new JScrollPane(area),
+                    new JLabel("Nova mensagem:"), novaMsg
+                };
+
+                int enviar = JOptionPane.showConfirmDialog(
+                    null, fields, "Conversando com " + selecionado.getNome(), JOptionPane.OK_CANCEL_OPTION
+                );
+
+                if (enviar == JOptionPane.OK_OPTION) {
+                    String conteudo = novaMsg.getText();
+                    if (!conteudo.isEmpty()) {
+                        sistema.enviarMensagem(selecionado.getEmail(), conteudo);
+                        JOptionPane.showMessageDialog(null, "Mensagem enviada!");
+                    }
+                }
+            }
+        }
+    }
+
+    private void mostrarPerfil() {
+        Usuario atual = sistema.getUsuarioLogado();
+        StringBuilder info = new StringBuilder();
+        info.append("<html>");
+        info.append("<h2>Perfil de ").append(atual.getNome()).append("</h2>");
+        info.append("<b>Email:</b> ").append(atual.getEmail()).append("<br>");
+        info.append("<b>Seguidores:</b> ").append(atual.getSeguidores().size()).append("<br>");
+        info.append("<b>Seguindo:</b> ").append(atual.getSeguindo().size()).append("<br><br>");
+        info.append("<b>Publicações:</b><br>");
+        if (atual.getPublicacoes().isEmpty()) {
+            info.append("Nenhuma publicação ainda.");
+        } else {
+            for (dados.Foto f : atual.getPublicacoes()) {
+                info.append("- ").append(f.getLegenda()).append("<br>");
+            }
+        }
+        info.append("</html>");
+
+        JLabel label = new JLabel(info.toString());
+        JScrollPane scroll = new JScrollPane(label);
+        scroll.setPreferredSize(new Dimension(350, 200));
+
+        JOptionPane.showMessageDialog(null, scroll, "Meu Perfil - Omeletty", JOptionPane.INFORMATION_MESSAGE);
     }
 }
