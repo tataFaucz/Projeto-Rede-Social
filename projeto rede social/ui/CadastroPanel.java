@@ -25,19 +25,33 @@ public class CadastroPanel extends JPanel {
 
     private void inicializarComponentes() {
         setLayout(new GridBagLayout());
+        setBackground(MainFrame.AMARELO_CLARO);
         GridBagConstraints gbc = new GridBagConstraints();
 
         JLabel nomeLabel = new JLabel("Nome:");
+        nomeLabel.setForeground(MainFrame.AMARELO_ESCURO);
         nomeField = new JTextField(20);
 
         JLabel emailLabel = new JLabel("Email:");
+        emailLabel.setForeground(MainFrame.AMARELO_ESCURO);
         emailField = new JTextField(20);
 
         JLabel senhaLabel = new JLabel("Senha:");
+        senhaLabel.setForeground(MainFrame.AMARELO_ESCURO);
         senhaField = new JPasswordField(20);
 
         cadastrarButton = new JButton("Cadastrar");
         voltarButton = new JButton("Voltar");
+
+        cadastrarButton.setBackground(MainFrame.AMARELO_BOTAO);
+        cadastrarButton.setForeground(Color.DARK_GRAY);
+        cadastrarButton.setBorder(BorderFactory.createLineBorder(MainFrame.AMARELO_BORDA, 2));
+        cadastrarButton.setFont(new Font("Arial", Font.BOLD, 14));
+
+        voltarButton.setBackground(MainFrame.AMARELO_MEDIO);
+        voltarButton.setForeground(Color.DARK_GRAY);
+        voltarButton.setBorder(BorderFactory.createLineBorder(MainFrame.AMARELO_BORDA, 2));
+        voltarButton.setFont(new Font("Arial", Font.BOLD, 14));
 
         gbc.insets = new Insets(5, 5, 5, 5);
 
@@ -69,7 +83,7 @@ public class CadastroPanel extends JPanel {
 
                 if (sistema.criarConta(nome, email, senha)) {
                     JOptionPane.showMessageDialog(null, "Conta criada com sucesso!");
-                    mainFrame.mostrarInicio(); // volta para tela inicial
+                    mainFrame.mostrarInicio();
                 } else {
                     JOptionPane.showMessageDialog(null, "Email já está em uso.");
                 }
@@ -78,7 +92,7 @@ public class CadastroPanel extends JPanel {
 
         voltarButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                mainFrame.mostrarInicio(); // volta para tela inicial
+                mainFrame.mostrarInicio();
             }
         });
     }
