@@ -24,16 +24,29 @@ public class LoginPanel extends JPanel {
 
     private void inicializarComponentes() {
         setLayout(new GridBagLayout());
+        setBackground(MainFrame.AMARELO_CLARO);
         GridBagConstraints gbc = new GridBagConstraints();
 
         JLabel emailLabel = new JLabel("Email:");
+        emailLabel.setForeground(MainFrame.AMARELO_ESCURO);
         emailField = new JTextField(20);
 
         JLabel senhaLabel = new JLabel("Senha:");
+        senhaLabel.setForeground(MainFrame.AMARELO_ESCURO);
         senhaField = new JPasswordField(20);
 
         loginButton = new JButton("Entrar");
         voltarButton = new JButton("Voltar");
+
+        loginButton.setBackground(MainFrame.AMARELO_BOTAO);
+        loginButton.setForeground(Color.DARK_GRAY);
+        loginButton.setBorder(BorderFactory.createLineBorder(MainFrame.AMARELO_BORDA, 2));
+        loginButton.setFont(new Font("Arial", Font.BOLD, 14));
+
+        voltarButton.setBackground(MainFrame.AMARELO_MEDIO);
+        voltarButton.setForeground(Color.DARK_GRAY);
+        voltarButton.setBorder(BorderFactory.createLineBorder(MainFrame.AMARELO_BORDA, 2));
+        voltarButton.setFont(new Font("Arial", Font.BOLD, 14));
 
         gbc.insets = new Insets(5, 5, 5, 5);
 
@@ -55,7 +68,6 @@ public class LoginPanel extends JPanel {
         gbc.gridx = 1; gbc.gridy = 2;
         add(voltarButton, gbc);
 
-        // Ações dos botões
         loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String email = emailField.getText();
@@ -63,7 +75,7 @@ public class LoginPanel extends JPanel {
 
                 if (sistema.autenticar(email, senha)) {
                     JOptionPane.showMessageDialog(null, "Login bem-sucedido!");
-                    mainFrame.mostrarFeed(); // troca para painel principal
+                    mainFrame.mostrarFeed();
                 } else {
                     JOptionPane.showMessageDialog(null, "Email ou senha incorretos.");
                 }
@@ -72,7 +84,7 @@ public class LoginPanel extends JPanel {
 
         voltarButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                mainFrame.mostrarInicio(); // volta para tela inicial
+                mainFrame.mostrarInicio();
             }
         });
     }
