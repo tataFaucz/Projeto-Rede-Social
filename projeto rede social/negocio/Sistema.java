@@ -7,21 +7,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Sistema {
-    private List<Usuario> usuarios = new ArrayList<>();
+    private List<Usuario> usuarios;
     private Usuario usuarioLogado;
 
-public boolean criarConta(String nome, String email, String senha) {
-    for (Usuario u : usuarios) {
-        if (u.getEmail().equalsIgnoreCase(email)) {
-            return false; 
-        }
+    public Sistema() {
+        usuarios = new ArrayList<>();
+        usuarioLogado = null;
     }
-    Usuario novo = new Usuario(nome, email, senha, null);
-    usuarios.add(novo);
-    return true;
-}
 
-    public boolean login(String email, String senha) {
+    public boolean criarConta(String nome, String email, String senha) {
+        for (Usuario u : usuarios) {
+            if (u.getEmail().equalsIgnoreCase(email)) {
+                return false;
+            }
+        }
+        usuarios.add(new Usuario(nome, email, senha, null));
+        return true;
+    }
+
+    public boolean autenticar(String email, String senha) {
         for (Usuario u : usuarios) {
             if (u.getEmail().equalsIgnoreCase(email) && u.getSenha().equals(senha)) {
                 usuarioLogado = u;
@@ -29,6 +33,10 @@ public boolean criarConta(String nome, String email, String senha) {
             }
         }
         return false;
+    }
+
+    public Usuario getUsuarioLogado() {
+        return usuarioLogado;
     }
 
     public void logout() {
@@ -92,10 +100,6 @@ public boolean criarConta(String nome, String email, String senha) {
         }
         conversas.sort((a, b) -> a.getDataHora().compareTo(b.getDataHora()));
         return conversas;
-    }
-
-    public Usuario getUsuarioLogado() {
-        return usuarioLogado;
     }
 
     public List<Usuario> getUsuarios() {
