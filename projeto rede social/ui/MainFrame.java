@@ -7,7 +7,6 @@ import java.awt.*;
 public class MainFrame extends JFrame {
     private Sistema sistema;
 
-    // Paleta de amarelos
     public static final Color AMARELO_CLARO = new Color(255, 249, 196);
     public static final Color AMARELO_MEDIO = new Color(255, 235, 59);
     public static final Color AMARELO_ESCURO = new Color(255, 193, 7);
@@ -16,7 +15,7 @@ public class MainFrame extends JFrame {
 
     public MainFrame(Sistema sistema) {
         this.sistema = sistema;
-        setTitle("Rede Social");
+        setTitle("Omellety - Rede Social");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 400);
         setLocationRelativeTo(null);
