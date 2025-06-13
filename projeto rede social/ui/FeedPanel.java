@@ -8,6 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Collections;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class FeedPanel extends JPanel {
     private Sistema sistema;
@@ -19,6 +21,13 @@ public class FeedPanel extends JPanel {
         this.mainFrame = mainFrame;
         setLayout(new BorderLayout());
         setBackground(MainFrame.AMARELO_CLARO);
+
+        // Adiciona a logo no topo
+        ImageIcon logoIcon = new ImageIcon("logo.png"); // Certifique-se que logo.png está na raiz do projeto
+        Image img = logoIcon.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
+        JLabel logoLabel = new JLabel(new ImageIcon(img));
+        logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        add(logoLabel, BorderLayout.NORTH);
 
         criarMenuLateral();
         criarAreaFeed();
@@ -166,49 +175,93 @@ public class FeedPanel extends JPanel {
     private void explorarUsuarios() {
         Usuario atual = sistema.getUsuarioLogado();
         List<Usuario> usuarios = sistema.getUsuarios();
-        DefaultListModel<String> model = new DefaultListModel<>();
 
-        for (Usuario u : usuarios) {
-            if (!u.equals(atual)) {
-                boolean seguindo = atual.getSeguindo().contains(u);
-                model.addElement(u.getNome() + " (" + u.getEmail() + ")" + (seguindo ? " [Seguindo]" : ""));
+        while (true) {
+            String termo = JOptionPane.showInputDialog(null, "Pesquisar usuário por nome:", "Explorar usuários da Omeletty", JOptionPane.QUESTION_MESSAGE);
+            if (termo == null) return; // Cancelar
+
+            List<Usuario> encontrados = new ArrayList<>();
+            for (Usuario u : usuarios) {
+                if (!u.equals(atual) && u.getNome().toLowerCase().contains(termo.toLowerCase())) {
+                    encontrados.add(u);
+                }
+            }
+
+            if (encontrados.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Nenhum usuário encontrado.");
+                continue;
+            }
+
+            String[] nomes = encontrados.stream()
+                    .map(u -> u.getNome() + " (" + u.getEmail() + ")")
+                    .toArray(String[]::new);
+
+            String escolha = (String) JOptionPane.showInputDialog(
+                    null,
+                    "Selecione um usuário:",
+                    "Resultados da pesquisa",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    nomes,
+                    nomes[0]
+            );
+
+            if (escolha == null) return; // Cancelar
+
+            Usuario selecionado = encontrados.get(Arrays.asList(nomes).indexOf(escolha));
+            mostrarPerfilDeOutroUsuario(atual, selecionado);
+
+            int op = JOptionPane.showConfirmDialog(null, "Deseja voltar para a pesquisa?", "Explorar", JOptionPane.YES_NO_OPTION);
+            if (op != JOptionPane.YES_OPTION) break;
+        }
+    }
+
+    private void mostrarPerfilDeOutroUsuario(Usuario atual, Usuario usuario) {
+        StringBuilder info = new StringBuilder();
+        info.append("<html>");
+        info.append("<h2>").append(usuario.getNome()).append("</h2>");
+        info.append("<b>Email:</b> ").append(usuario.getEmail()).append("<br>");
+        info.append("<b>Biografia:</b> ").append(usuario.getBiografia() != null ? usuario.getBiografia() : "Nenhuma").append("<br>");
+        info.append("<b>Seguidores:</b> ").append(usuario.getSeguidores().size()).append("<br>");
+        info.append("<b>Seguindo:</b> ").append(usuario.getSeguindo().size()).append("<br><br>");
+        info.append("<b>Publicações:</b><br>");
+        if (usuario.getPublicacoes().isEmpty()) {
+            info.append("Nenhuma publicação ainda.");
+        } else {
+            for (dados.Foto f : usuario.getPublicacoes()) {
+                info.append("- ").append(f.getLegenda()).append("<br>");
             }
         }
+        info.append("</html>");
 
-        JList<String> lista = new JList<>(model);
-        lista.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JLabel label = new JLabel(info.toString());
+        JScrollPane scroll = new JScrollPane(label);
+        scroll.setPreferredSize(new Dimension(350, 200));
 
-        int result = JOptionPane.showConfirmDialog(
-            null,
-            new JScrollPane(lista),
-            "Explorar usuários da Omeletty",
-            JOptionPane.OK_CANCEL_OPTION
+        boolean seguindo = atual.getSeguindo().contains(usuario);
+        String acao = seguindo ? "Deixar de seguir" : "Seguir";
+        Object[] opcoes = {acao, "Voltar"};
+
+        int op = JOptionPane.showOptionDialog(
+                null,
+                scroll,
+                "Perfil de " + usuario.getNome(),
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                opcoes,
+                opcoes[1]
         );
 
-        if (result == JOptionPane.OK_OPTION && lista.getSelectedIndex() != -1) {
-            Usuario selecionado = null;
-            int idx = 0;
-            for (Usuario u : usuarios) {
-                if (!u.equals(atual)) {
-                    if (idx == lista.getSelectedIndex()) {
-                        selecionado = u;
-                        break;
-                    }
-                    idx++;
-                }
+        if (op == 0) {
+            if (seguindo) {
+                atual.deixarDeSeguir(usuario);
+                JOptionPane.showMessageDialog(null, "Você deixou de seguir " + usuario.getNome() + "!");
+            } else {
+                atual.seguir(usuario);
+                JOptionPane.showMessageDialog(null, "Agora você segue " + usuario.getNome() + "!");
             }
-            if (selecionado != null) {
-                if (atual.getSeguindo().contains(selecionado)) {
-                    int desf = JOptionPane.showConfirmDialog(null, "Você já segue este usuário. Deseja deixar de seguir?", "Omeletty", JOptionPane.YES_NO_OPTION);
-                    if (desf == JOptionPane.YES_OPTION) {
-                        atual.deixarDeSeguir(selecionado);
-                        JOptionPane.showMessageDialog(null, "Você deixou de seguir " + selecionado.getNome() + "!");
-                    }
-                } else {
-                    atual.seguir(selecionado);
-                    JOptionPane.showMessageDialog(null, "Agora você segue " + selecionado.getNome() + "!");
-                }
-            }
+            mostrarPerfilDeOutroUsuario(atual, usuario);
         }
     }
 
@@ -246,7 +299,6 @@ public class FeedPanel extends JPanel {
                 }
             }
             if (selecionado != null) {
-                // Exibe histórico
                 List<dados.Mensagem> conversas = sistema.visualizarMensagens(selecionado.getEmail());
                 StringBuilder historico = new StringBuilder();
                 if (conversas != null && !conversas.isEmpty()) {
@@ -290,6 +342,7 @@ public class FeedPanel extends JPanel {
         info.append("<html>");
         info.append("<h2>Perfil de ").append(atual.getNome()).append("</h2>");
         info.append("<b>Email:</b> ").append(atual.getEmail()).append("<br>");
+        info.append("<b>Biografia:</b> ").append(atual.getBiografia() != null ? atual.getBiografia() : "Nenhuma").append("<br>");
         info.append("<b>Seguidores:</b> ").append(atual.getSeguidores().size()).append("<br>");
         info.append("<b>Seguindo:</b> ").append(atual.getSeguindo().size()).append("<br><br>");
         info.append("<b>Publicações:</b><br>");
@@ -306,6 +359,35 @@ public class FeedPanel extends JPanel {
         JScrollPane scroll = new JScrollPane(label);
         scroll.setPreferredSize(new Dimension(350, 200));
 
-        JOptionPane.showMessageDialog(null, scroll, "Meu Perfil - Omeletty", JOptionPane.INFORMATION_MESSAGE);
+        int op = JOptionPane.showOptionDialog(
+            null,
+            scroll,
+            "Meu Perfil - Omeletty",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.INFORMATION_MESSAGE,
+            null,
+            new Object[]{"Editar Perfil", "Fechar"},
+            "Fechar"
+        );
+
+        if (op == 0) { // Editar Perfil
+            JTextField nomeField = new JTextField(atual.getNome());
+            JTextField bioField = new JTextField(atual.getBiografia() != null ? atual.getBiografia() : "");
+            JTextField fotoField = new JTextField(atual.getFotoPerfil() != null ? atual.getFotoPerfil() : "");
+
+            Object[] fields = {
+                "Nome:", nomeField,
+                "Biografia:", bioField,
+                "Caminho da foto de perfil:", fotoField
+            };
+
+            int res = JOptionPane.showConfirmDialog(null, fields, "Editar Perfil", JOptionPane.OK_CANCEL_OPTION);
+            if (res == JOptionPane.OK_OPTION) {
+                atual.setNome(nomeField.getText());
+                atual.setBiografia(bioField.getText());
+                atual.setFotoPerfil(fotoField.getText());
+                JOptionPane.showMessageDialog(null, "Perfil atualizado!");
+            }
+        }
     }
-}
+}            
