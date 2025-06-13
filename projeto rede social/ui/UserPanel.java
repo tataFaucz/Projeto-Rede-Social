@@ -9,6 +9,13 @@ import dados.Comentario;
 import java.util.List;
 
 public class UserPanel extends JPanel {
+    
+    public static final Color AMARELO_CLARO = new Color(255, 249, 196);
+    public static final Color AMARELO_MEDIO = new Color(255, 235, 59);
+    public static final Color AMARELO_ESCURO = new Color(255, 193, 7);
+    public static final Color AMARELO_BOTAO = new Color(255, 213, 79);
+    public static final Color AMARELO_BORDA = new Color(255, 179, 0);
+    
     public UserPanel(MainFrame frame, Sistema sistema, String nomeUsuario) {
         setLayout(new BorderLayout());
         Usuario usuario = sistema.buscarUsuario(nomeUsuario);
@@ -18,7 +25,6 @@ public class UserPanel extends JPanel {
             return;
         }
 
-        // Perfil
         JPanel perfilPanel = new JPanel();
         perfilPanel.setBackground(new Color(255, 255, 255, 200));
         perfilPanel.setLayout(new BoxLayout(perfilPanel, BoxLayout.Y_AXIS));
@@ -36,9 +42,8 @@ public class UserPanel extends JPanel {
         nome.setAlignmentX(Component.CENTER_ALIGNMENT);
         perfilPanel.add(nome);
 
-        // Álbum de fotos
         JPanel fotosPanel = new JPanel();
-        fotosPanel.setBorder(BorderFactory.createTitledBorder("Floguinho"));
+        fotosPanel.setBorder(BorderFactory.createTitledBorder("Omellety - Fotos de " + usuario.getNome()));
         fotosPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
 
         List<Foto> fotos = usuario.getPublicacoes();
@@ -57,7 +62,6 @@ public class UserPanel extends JPanel {
             legenda.setHorizontalAlignment(SwingConstants.CENTER);
             mini.add(legenda);
 
-            // Comentários da foto
             List<Comentario> comentarios = foto.getComentarios();
             if (!comentarios.isEmpty()) {
                 mini.add(new JLabel("Comentários:"));
@@ -69,7 +73,6 @@ public class UserPanel extends JPanel {
             fotosPanel.add(mini);
         }
 
-        // Layout principal com rolagem para fotos
         add(perfilPanel, BorderLayout.WEST);
         add(new JScrollPane(fotosPanel), BorderLayout.CENTER);
     }
