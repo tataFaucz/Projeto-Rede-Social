@@ -7,6 +7,17 @@ import dados.Foto;
 import java.util.List;
 
 public class PhotoPanel extends JPanel {
+    
+    public static final Color AMARELO_CLARO = new Color(255, 249, 196);
+    public static final Color AMARELO_MEDIO = new Color(255, 235, 59);
+    public static final Color AMARELO_ESCURO = new Color(255, 193, 7);
+    public static final Color AMARELO_BOTAO = new Color(255, 213, 79);
+    public static final Color AMARELO_BORDA = new Color(255, 179, 0);
+    /**
+     * Painel que exibe as fotos de um usuário.
+     * 
+     * @param usuario O usuário cujas fotos serão exibidas.
+     */
     public PhotoPanel(Usuario usuario) {
         setLayout(new BorderLayout());
         JLabel label = new JLabel("Floguinho - Suas fotos:");
