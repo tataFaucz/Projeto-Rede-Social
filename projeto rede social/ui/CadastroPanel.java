@@ -17,6 +17,12 @@ public class CadastroPanel extends JPanel {
     private JButton cadastrarButton;
     private JButton voltarButton;
 
+    public static final Color AMARELO_CLARO = new Color(255, 249, 196);
+    public static final Color AMARELO_MEDIO = new Color(255, 235, 59);
+    public static final Color AMARELO_ESCURO = new Color(255, 193, 7);
+    public static final Color AMARELO_BOTAO = new Color(255, 213, 79);
+    public static final Color AMARELO_BORDA = new Color(255, 179, 0);
+
     public CadastroPanel(Sistema sistema, MainFrame mainFrame) {
         this.sistema = sistema;
         this.mainFrame = mainFrame;
