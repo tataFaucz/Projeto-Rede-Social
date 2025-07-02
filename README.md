@@ -1,126 +1,148 @@
-<h1 align="center">🍳 Omeletty - Sua Rede Social de Omelete! 🥚</h1>
+# Projeto Rede Social
 
-<p align="center">
-  <b>Uma rede social divertida e didática feita em Java Swing.<br>
-  Compartilhe fotos, faça amigos, e curta muito!</b>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Java-ED8B00?style=flat&logo=java&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Swing-GUI-blue"/>
-  <img src="https://img.shields.io/badge/Projeto-Portfólio-success"/>
-  <img src="https://img.shields.io/badge/PRs-Bem%20Vindos-green"/>
-</p>
+Bem-vindo ao **Projeto Rede Social**!  
+Este repositório contém uma aplicação modular, desenvolvida em Java, que simula as principais funcionalidades de uma rede social. O projeto utiliza Java Swing para interface gráfica e PostgreSQL (gerenciado via PgAdmin4) para persistência de dados.
 
 ---
+
+## Índice
+
+- [Descrição Geral](#descrição-geral)
+- [Funcionalidades Principais](#funcionalidades-principais)
+- [Estrutura de Pastas](#estrutura-de-pastas)
+- [Requisitos](#requisitos)
+- [Configuração do Banco de Dados](#configuração-do-banco-de-dados)
+- [Como Executar](#como-executar)
+- [Como Contribuir](#como-contribuir)
+- [Autores e Créditos](#autores-e-créditos)
+- [Licença](#licença)
+
+---
+
+## Descrição Geral
+
+Este projeto simula uma rede social simples, com foco em boas práticas de organização de código, separação de responsabilidades e implementação do padrão DAO (Data Access Object).  
+A aplicação é ideal para fins didáticos ou como base para projetos mais complexos.
+
+- **Linguagem:** Java
+- **Interface gráfica:** Java Swing
+- **Banco de Dados:** PostgreSQL (acessado e gerenciado via PgAdmin4)
+
+---
+
+## Funcionalidades Principais
+
+- Cadastro e autenticação de usuários
+- Criação, edição e exclusão de postagens
+- Comentários em postagens
+- Upload e exibição de imagens
+- Listagem de usuários, postagens e comentários
+- Interface gráfica amigável
+- Estrutura modular baseada em camadas
+
+---
+
+## Estrutura de Pastas
 
 ```
-      🍳
-   /-------\
-  |  OMELETTY |
-   \-------/
-    (  •_•)
-   <|     |>
-    /     \
+projeto rede social/
+├── dados/        # Classes de modelo (Usuário, Postagem, Comentário, etc.)
+├── dao/          # Padrão DAO, manipulação e persistência dos dados (PostgreSQL)
+├── images/       # Armazenamento de imagens utilizadas na aplicação
+├── negocios/     # Lógica de negócio e inicialização do sistema
+├── ui/           # Interface gráfica do usuário (Java Swing)
+└── README.md     # Este arquivo
 ```
 
----
+### Explicação das Pastas
 
-## 🥚 Sobre o Projeto
+- **dados/**  
+  Contém as representações das entidades do sistema, como Usuário, Postagem, Comentário, Foto, etc.
 
-Omeletty é uma rede social simples e divertida, desenvolvida em Java com interface gráfica Swing. Permite que usuários criem contas, publiquem fotos, interajam com amigos, curtam, comentem, troquem mensagens e muito mais. Tudo isso com uma pegada didática e descontraída para mostrar suas skills de POO!
+- **dao/**  
+  Implementação do padrão DAO, separando a lógica de acesso ao banco de dados das regras de negócio.  
+  Todas as operações com PostgreSQL são centralizadas aqui.
 
----
+- **images/**  
+  Armazena imagens de exemplo, avatares, fotos de postagens, etc.
 
-## 🗂️ Estrutura do Projeto
+- **negocios/**  
+  Responsável pela lógica principal do sistema (regras de negócio), validações, fluxos e inicialização.
 
-```
-dados/
-    Comentario.java
-    Foto.java
-    Mensagem.java
-    Usuario.java
-images/
-    imagem.bob.png
-negocios/
-    logo.png
-    Main.java
-    perfil.tata.JPG
-    Sistema.java
-    uml.png
-ui/
-    CadastroPanel.java
-    ExplorePanel.java
-    FeedPanel.java
-    InicioPanel.java
-    LoginPanel.java
-    MainFrame.java
-    PhotoPanel.java
-    UserPanel.java
-```
+- **ui/**  
+  Implementação da interface gráfica utilizando Java Swing, facilitando a interação do usuário com o sistema.
 
 ---
 
-## ✨ Funcionalidades
+## Requisitos
 
-- Cadastro e login de usuários
-- Publicação de fotos com legenda
-- Curtidas, comentários e compartilhamentos
-- Mensagens privadas entre usuários
-- Explorar e seguir/desseguir outros usuários
-- Visualizar e editar perfil (nome, bio, foto)
-- Interface gráfica amigável e personalizada
+- **Java 8** ou superior
+- **PostgreSQL** (recomendado gerenciar via **PgAdmin4**)
+- **Driver JDBC do PostgreSQL**
+- **IDE Java** recomendada (Eclipse, IntelliJ IDEA ou NetBeans)
 
 ---
 
-## 🚀 Como Executar
+## Configuração do Banco de Dados
 
-**Pré-requisitos:**  
-- Java 8 ou superior instalado
+1. **Instale o PostgreSQL e o PgAdmin4.**
+2. **Crie um banco de dados para o projeto** (exemplo: `rede_social`).
+3. **Ajuste as configurações de conexão no projeto:**  
+   No arquivo de configuração (ou diretamente nas classes DAO), informe:
+   - URL do banco (ex: `jdbc:postgresql://localhost:5432/rede_social`)
+   - Usuário e senha do banco
 
-**Compilação:**  
-No terminal, a partir da raiz do projeto:
-```sh
-javac dados/*.java negocios/*.java ui/*.java
-```
-
-**Execução:**  
-```sh
-java negocios.Main
-```
+4. **Execute os scripts de criação de tabelas** (caso disponíveis na pasta do projeto ou fornecidos separadamente).
 
 ---
 
-## 🔍 Principais Arquivos
+## Como Executar
 
-- `negocios/Main.java`: Inicializa o sistema e a interface gráfica
-- `negocios/Sistema.java`: Regras de negócio e lógica principal
-- `dados/Usuario.java`: Modela o usuário da rede social
-- `dados/Foto.java`: Modela fotos/publicações
-- `ui/MainFrame.java`: Janela principal da interface
-- Telas de interface: `LoginPanel`, `CadastroPanel`, `FeedPanel`, etc.
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/tataFaucz/Projeto-Rede-Social.git
+   ```
+
+2. **Abra o projeto em sua IDE Java de preferência.**
+
+3. **Adicione o driver JDBC do PostgreSQL ao classpath do projeto.**
+
+4. **Configure as credenciais do banco de dados conforme instruções acima.**
+
+5. **Compile o projeto:**
+   - Na IDE, utilize a opção de "Build Project"
+   - Ou pelo terminal:
+     ```bash
+     javac -cp ".:path/to/postgresql.jar" negocios/Main.java
+     ```
+
+6. **Execute a aplicação:**
+   - Pela IDE, execute a classe principal (geralmente `negocios.Main`)
+   - Ou pelo terminal:
+     ```bash
+     java -cp ".:path/to/postgresql.jar" negocios.Main
+     ```
 
 ---
 
-## 🤔 Observações
+## Como Contribuir
 
-- Imagens de exemplo e logo devem estar na raiz do projeto (`imagem.bob.png`, `logo.png`)
-- Projeto para fins didáticos e portfólio, pode ser expandido com novas features!
-- Desenvolvido originalmente para a disciplina de Programação Orientada a Objetos
-- Mascote oficial: Omeletty, o Omelete mais social da internet! 🍳
+1. **Fork este repositório**
+2. Crie uma branch para sua feature ou correção (`git checkout -b minha-feature`)
+3. Faça commit das suas alterações (`git commit -am 'Adiciona nova feature'`)
+4. Faça push para a branch criada (`git push origin minha-feature`)
+5. Abra um Pull Request
 
----
-
-## 💡 Próximos Passos / Ideias
-
-- Upload real de imagens (atualmente é simulado)
-- Melhorias no sistema de mensagens e notificações
-- Novos temas para interface
-- Deploy em Web/Cloud (ex: JavaFX com Spring Boot)
+**Sugestões, correções e melhorias são sempre bem-vindas!**
 
 ---
 
-## 👩‍💻 Autor
+## Autores e Créditos
 
-Feito com carinho por [Tatá Faucz](https://github.com/tataFaucz)  
-Siga, contribua ou me chame pra um café! ☕🥚
+- Desenvolvedor principal: [@tataFaucz](https://github.com/tataFaucz)
+
+---
+
+## Licença
+
+Este projeto é de cunho acadêmico.
