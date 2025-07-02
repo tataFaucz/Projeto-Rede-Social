@@ -1,8 +1,43 @@
-# Omeletty - Projeto Rede Social
+<!-- Mascote Omeletty -->
+<p align="center">
+  <img src="https://emojicombos.com/img/emoji/🥚/256.png" alt="Omelette Mascot" width="96"/>
+</p>
 
-Omeletty é uma rede social simples desenvolvida em Java com interface gráfica Swing. Permite cadastro, login, publicação de fotos, comentários, curtidas, compartilhamentos, mensagens privadas, visualização e edição de perfis de usuários, além de explorar e seguir outros usuários.
+<h1 align="center">🍳 Omeletty - Sua Rede Social de Omelete! 🥚</h1>
 
-## Estrutura do Projeto
+<p align="center">
+  <b>Uma rede social divertida e didática feita em Java Swing.<br>
+  Compartilhe fotos, faça amigos, e curta muito!</b>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Java-ED8B00?style=flat&logo=java&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Swing-GUI-blue"/>
+  <img src="https://img.shields.io/badge/Projeto-Portfólio-success"/>
+  <img src="https://img.shields.io/badge/PRs-Bem%20Vindos-green"/>
+</p>
+
+---
+
+```
+      🍳
+   /-------\
+  |  OMELETTY |
+   \-------/
+    (  •_•)
+   <|     |>
+    /     \
+```
+
+---
+
+## 🥚 Sobre o Projeto
+
+Omeletty é uma rede social simples e divertida, desenvolvida em Java com interface gráfica Swing. Permite que usuários criem contas, publiquem fotos, interajam com amigos, curtam, comentem, troquem mensagens e muito mais. Tudo isso com uma pegada didática e descontraída para mostrar suas skills de POO!
+
+---
+
+## 🗂️ Estrutura do Projeto
 
 ```
 dados/
@@ -29,48 +64,68 @@ ui/
     UserPanel.java
 ```
 
-## Funcionalidades
+---
+
+## ✨ Funcionalidades
 
 - Cadastro e login de usuários
 - Publicação de fotos com legenda
-- Curtidas e compartilhamentos em fotos
-- Comentários em fotos
+- Curtidas, comentários e compartilhamentos
 - Mensagens privadas entre usuários
-- Explorar outros usuários (pesquisa por nome, seguir/deixar de seguir)
-- Visualização de perfil de outros usuários (nome, bio, seguidores, seguindo, fotos)
-- Visualização e edição do próprio perfil (nome, biografia, foto de perfil)
-- Interface gráfica amigável com logo personalizada
+- Explorar e seguir/desseguir outros usuários
+- Visualizar e editar perfil (nome, bio, foto)
+- Interface gráfica amigável e personalizada
 
-## Como Executar
+---
 
-**Pré-requisitos:**
+## 🚀 Como Executar
+
+**Pré-requisitos:**  
 - Java 8 ou superior instalado
 
 **Compilação:**  
-Compile todos os arquivos `.java`:
-
+No terminal, a partir da raiz do projeto:
 ```sh
 javac dados/*.java negocios/*.java ui/*.java
 ```
 
 **Execução:**  
-Execute a classe principal:
-
 ```sh
 java negocios.Main
 ```
 
-## Principais Arquivos
+---
 
-- [negocios/Main.java](negocios/Main.java): Inicializa o sistema e a interface gráfica.
-- [negocios/Sistema.java](negocios/Sistema.java): Lógica principal do sistema (cadastro, login, publicações, etc).
-- [dados/Usuario.java](dados/Usuario.java): Representa um usuário da rede social.
-- [dados/Foto.java](dados/Foto.java): Representa uma foto/publicação.
-- [ui/MainFrame.java](ui/MainFrame.java): Janela principal da interface gráfica.
-- [ui/LoginPanel.java](ui/LoginPanel.java), [ui/CadastroPanel.java](ui/CadastroPanel.java), [ui/FeedPanel.java](ui/FeedPanel.java): Telas da interface.
+## 🔍 Principais Arquivos
 
-## Observações
+- `negocios/Main.java`: Inicializa o sistema e a interface gráfica
+- `negocios/Sistema.java`: Regras de negócio e lógica principal
+- `dados/Usuario.java`: Modela o usuário da rede social
+- `dados/Foto.java`: Modela fotos/publicações
+- `ui/MainFrame.java`: Janela principal da interface
+- Telas de interface: `LoginPanel`, `CadastroPanel`, `FeedPanel`, etc.
 
-- Imagens de exemplo e a logo devem estar no mesmo diretório do projeto (ex: `imagem.bob.png`, `logo.png`).
-- O projeto é apenas para fins didáticos e pode ser expandido com novas funcionalidades.
-- Desenvolvido para a disciplina de Programação Orientada a Objetos.
+---
+
+## 🤔 Observações
+
+- Imagens de exemplo e logo devem estar na raiz do projeto (`imagem.bob.png`, `logo.png`)
+- Projeto para fins didáticos e portfólio, pode ser expandido com novas features!
+- Desenvolvido originalmente para a disciplina de Programação Orientada a Objetos
+- Mascote oficial: Omeletty, o Omelete mais social da internet! 🍳
+
+---
+
+## 💡 Próximos Passos / Ideias
+
+- Upload real de imagens (atualmente é simulado)
+- Melhorias no sistema de mensagens e notificações
+- Novos temas para interface
+- Deploy em Web/Cloud (ex: JavaFX com Spring Boot)
+
+---
+
+## 👩‍💻 Autor
+
+Feito com carinho por [Tatá Faucz](https://github.com/tataFaucz)  
+Siga, contribua ou me chame pra um café! ☕🥚
