@@ -1,8 +1,3 @@
-<!-- Mascote Omeletty -->
-<p align="center">
-  <img src="https://emojicombos.com/img/emoji/🥚/256.png" alt="Omelette Mascot" width="96"/>
-</p>
-
 <h1 align="center">🍳 Omeletty - Sua Rede Social de Omelete! 🥚</h1>
 
 <p align="center">
