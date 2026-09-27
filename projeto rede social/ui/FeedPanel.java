@@ -432,11 +432,13 @@ public class FeedPanel extends JPanel {
 
         if (op == 0) {
             if (seguindo) {
-                atual.deixarDeSeguir(usuario);
-                JOptionPane.showMessageDialog(null, "Você deixou de seguir " + usuario.getNome() + "!");
+                if (sistema.deixarDeSeguirUsuario(usuario)) {
+                    JOptionPane.showMessageDialog(null, "Você deixou de seguir " + usuario.getNome() + "!");
+                }
             } else {
-                atual.seguir(usuario);
-                JOptionPane.showMessageDialog(null, "Agora você segue " + usuario.getNome() + "!");
+                if (sistema.seguirUsuario(usuario)) {
+                    JOptionPane.showMessageDialog(null, "Agora você segue " + usuario.getNome() + "!");
+                }
             }
             mostrarPerfilDeOutroUsuario(atual, usuario);
         }

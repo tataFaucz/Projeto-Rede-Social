@@ -12,8 +12,8 @@ public class UsuarioDAO {
     public void inserir(Usuario usuario) throws SQLException {
         String sql = "INSERT INTO usuarios (nome, login, senha, caminho_foto_perfil, biografia) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+           try (Connection conn = ConnectionFactory.getConnection();
+               PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, usuario.getNome());
             stmt.setString(2, usuario.getEmail()); // email como login
@@ -21,6 +21,12 @@ public class UsuarioDAO {
             stmt.setString(4, usuario.getFotoPerfil());
             stmt.setString(5, usuario.getBiografia());
             stmt.executeUpdate();
+
+            try (ResultSet keys = stmt.getGeneratedKeys()) {
+                if (keys.next()) {
+                    usuario.setId(keys.getInt(1));
+                }
+            }
         }
     }
 
@@ -47,6 +53,18 @@ public class UsuarioDAO {
             }
         }
         return null;
+    }
+
+    public boolean existeLogin(String email) throws SQLException {
+        String sql = "SELECT EXISTS (SELECT 1 FROM usuarios WHERE LOWER(login) = LOWER(?))";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, email.trim());
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next() && rs.getBoolean(1);
+            }
+        }
     }
 
     // UPDATE - Atualizar dados do usuário

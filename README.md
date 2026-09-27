@@ -109,19 +109,23 @@ projeto rede social/
 
 4. **Configure as credenciais do banco de dados conforme instruções acima.**
 
-5. **Compile o projeto:**
-   - Na IDE, utilize a opção de "Build Project"
-   - Ou pelo terminal:
-     ```bash
-     javac -cp ".:path/to/postgresql.jar" negocios/Main.java
-     ```
+5. **Configure as variáveis e compile no PowerShell:**
+  ```powershell
+  $env:DB_HOST="::1"
+  $env:DB_PORT="5433"
+  $env:DB_NAME="omellety"
+  $env:DB_USER="postgres"
+  $env:DB_PASSWORD="sua-senha-real-do-postgres"
+  $sources = Get-ChildItem -Recurse -Filter *.java | Select-Object -ExpandProperty FullName
+  javac -cp "lib\postgresql-42.7.7.jar" -d out $sources
+  ```
 
-6. **Execute a aplicação:**
-   - Pela IDE, execute a classe principal (geralmente `negocios.Main`)
-   - Ou pelo terminal:
-     ```bash
-     java -cp ".:path/to/postgresql.jar" negocios.Main
-     ```
+6. **Execute a aplicação incluindo o driver JDBC no classpath:**
+  ```powershell
+  java -cp "out;lib\postgresql-42.7.7.jar" negocios.Main
+  ```
+
+  Use a senha definida para o usuário PostgreSQL `postgres`. `DB_PASSWORD="postgres"` só funciona se essa for realmente a senha configurada no servidor.
 
 ---
 

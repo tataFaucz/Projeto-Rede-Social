@@ -13,13 +13,19 @@ public class FotoDAO {
     public void inserir(Foto foto, int idUsuario) throws SQLException {
         String sql = "INSERT INTO fotos (id_usuario, legenda, caminho_arquivo) VALUES (?, ?, ?)";
 
-        try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+           try (Connection conn = ConnectionFactory.getConnection();
+               PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setInt(1, idUsuario);
             stmt.setString(2, foto.getLegenda());
             stmt.setString(3, foto.getCaminhoArquivo());
             stmt.executeUpdate();
+
+            try (ResultSet keys = stmt.getGeneratedKeys()) {
+                if (keys.next()) {
+                    foto.setId(keys.getInt(1));
+                }
+            }
         }
     }
 

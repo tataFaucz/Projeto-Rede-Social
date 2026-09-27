@@ -92,12 +92,22 @@ public class CadastroPanel extends JPanel {
                 return;
             }
 
-            boolean sucesso = sistema.cadastrarUsuario(nome, email, senha, fotoPerfil, biografia);
-            if (sucesso) {
-                JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso!");
-                mainFrame.mostrarInicio();
-            } else {
-                JOptionPane.showMessageDialog(this, "Email já cadastrado.");
+            try {
+                boolean sucesso = sistema.cadastrarUsuario(nome, email, senha, fotoPerfil, biografia);
+                if (sucesso) {
+                    JOptionPane.showMessageDialog(this, "Cadastro realizado com sucesso!");
+                    mainFrame.mostrarInicio();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Email já cadastrado.");
+                }
+            } catch (java.sql.SQLException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Não foi possível acessar o banco de dados.\nDetalhe: " + ex.getMessage(),
+                    "Erro de banco de dados",
+                    JOptionPane.ERROR_MESSAGE
+                );
             }
         });
 
